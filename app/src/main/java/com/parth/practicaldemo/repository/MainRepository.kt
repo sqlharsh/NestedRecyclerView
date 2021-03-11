@@ -22,7 +22,7 @@ object MainRepository {
                 call: Call<UsertDataResponseModel>,
                 response: Response<UsertDataResponseModel>
             ) {
-                if (response?.body() != null){
+                if (response?.body() == null){
                     data.value = null
                     return
                 }
