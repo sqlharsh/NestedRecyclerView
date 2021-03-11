@@ -46,18 +46,21 @@ class MainActivity : AppCompatActivity() {
      */
     private fun handlePagination(){
         adapter = UsersAdapter(userList = usersList)
-
-        val layoutManager = LinearLayoutManager(this)
+        binding.rcvUsers.adapter = adapter
+        val layoutManager = LinearLayoutManager(this,)
+        binding.rcvUsers.layoutManager = layoutManager
         val endlessRecyclerViewScrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int) {
-                if (!isLastPage){
-                    viewmodel.requestModel?.offset = viewmodel.requestModel?.offset?.plus(1)!!
-                    viewmodel.getUsersList()
+                binding.rcvUsers.post {
+                    if (!isLastPage){
+                        viewmodel.requestModel?.offset = viewmodel.requestModel?.offset?.plus(1)!!
+                        viewmodel.getUsersList()
+                    }
                 }
             }
         }
         binding.rcvUsers.addOnScrollListener(endlessRecyclerViewScrollListener)
-        binding.rcvUsers.adapter = adapter
+
     }
 
     /**
