@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/_8sdp">
 
-        <com.parth.practicaldemo.api.customview.CircleImageView
+        <com.parth.practicaldemo.customview.CircleImageView
             android:id="@+id/civ_user"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
@@ -42,6 +42,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
             android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:listitem="@layout/list_item_user_images"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/civ_user" />
     </androidx.constraintlayout.widget.ConstraintLayout>
