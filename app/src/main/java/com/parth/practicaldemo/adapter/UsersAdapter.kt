@@ -4,15 +4,20 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.parth.practicaldemo.api.responsemodel.User
 import com.parth.practicaldemo.databinding.ListItemUsersBinding
 
 internal class UsersAdapter(private var userList: MutableList<User>) :
     RecyclerView.Adapter<UsersAdapter.MyViewHolder>() {
+ private val viewPool = RecyclerView.RecycledViewPool()
 
     inner class MyViewHolder(var binding: ListItemUsersBinding) :
-        RecyclerView.ViewHolder(binding.root)
+        RecyclerView.ViewHolder(binding.root){
+
+    }
+
 
     @NonNull
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -27,7 +32,10 @@ internal class UsersAdapter(private var userList: MutableList<User>) :
 
         if (!user.items.isNullOrEmpty()) {
             val imageAdapter = UserImagesAdapter(user.items as MutableList<String>)
+            val linearLayoutManager = LinearLayoutManager(holder.binding.rcvUserImages.context,LinearLayoutManager.VERTICAL,false)
+            linearLayoutManager.initialPrefetchItemCount = user.items.size
             val gridLayoutManager = GridLayoutManager(holder.binding.rcvUserImages.context, 2)
+            gridLayoutManager.initialPrefetchItemCount = user.items.size
 //            gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
 //                override fun getSpanSize(position: Int): Int {
 //                    when(position){
@@ -37,9 +45,9 @@ internal class UsersAdapter(private var userList: MutableList<User>) :
 //                    }
 //                }
 //            }
-            holder.binding.rcvUserImages.setHasFixedSize(true)
             holder.binding.rcvUserImages.layoutManager = gridLayoutManager
             holder.binding.rcvUserImages.adapter = imageAdapter
+            holder.binding.rcvUserImages.setRecycledViewPool(viewPool)
         }
     }
 
