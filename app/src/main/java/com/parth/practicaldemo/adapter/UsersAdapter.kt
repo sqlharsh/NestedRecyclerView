@@ -32,19 +32,16 @@ internal class UsersAdapter(private var userList: MutableList<User>) :
 
         if (!user.items.isNullOrEmpty()) {
             val imageAdapter = UserImagesAdapter(user.items as MutableList<String>)
-            val linearLayoutManager = LinearLayoutManager(holder.binding.rcvUserImages.context,LinearLayoutManager.VERTICAL,false)
-            linearLayoutManager.initialPrefetchItemCount = user.items.size
             val gridLayoutManager = GridLayoutManager(holder.binding.rcvUserImages.context, 2)
             gridLayoutManager.initialPrefetchItemCount = user.items.size
-//            gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-//                override fun getSpanSize(position: Int): Int {
-//                    when(position){
-//                        0 -> return 1
-//                        1 -> return 2
-//                        else -> return 2
-//                    }
-//                }
-//            }
+            if (user.items.size%2 != 0){
+                gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        if (position == 0) return 2 else return 1
+                    }
+                }
+            }
+
             holder.binding.rcvUserImages.layoutManager = gridLayoutManager
             holder.binding.rcvUserImages.adapter = imageAdapter
             holder.binding.rcvUserImages.setRecycledViewPool(viewPool)
